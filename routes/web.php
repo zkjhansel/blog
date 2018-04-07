@@ -14,3 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+//后台命名空间分组
+Route::namespace('Admin')->group(function () {
+    Route::get('admin/login','AdminController@index');
+});
