@@ -24,7 +24,8 @@
 					<li>
 						<input type="text" class="code" name="code"/>
 						<span><i class="fa fa-check-square-o"></i></span>
-						<img src="#" alt="">
+						<img src="{{ captcha_src('flat')  }}"
+							 onclick="this.src='{{captcha_src('flat')}}&'+Math.random()" alt="">
 					</li>
 					<li>
 						<input type="submit" value="立即登陆"/>

@@ -12,7 +12,7 @@ class AdminController extends CommonController
      * @param Request $request
      * return view
      */
-    public function index(Request $request) {
+    public function login(Request $request) {
 
         //$res = DB::table('admin')->get();
         //dd($res);
@@ -20,4 +20,17 @@ class AdminController extends CommonController
         return view('admin.login');
 
     }
+
+    public function check(Request $request) {
+
+        //验证码验证码方法
+        $res = captcha_check('nfzn');
+
+        dd($res);
+
+
+
+    }
+
+
 }
