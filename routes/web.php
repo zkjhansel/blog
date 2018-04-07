@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 //后台命名空间分组
 Route::namespace('Admin')->group(function () {
-    Route::get('admin/login','AdminController@login');
+    Route::any('admin/login','AdminController@login');
 
     Route::get('admin/check/code/{code?}','AdminController@check');
 });

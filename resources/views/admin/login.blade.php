@@ -10,19 +10,22 @@
 		<h1>Blog</h1>
 		<h2>欢迎使用博客管理平台</h2>
 		<div class="form">
-			<p style="color:red">用户名错误</p>
-			<form action="#" method="post">
+			@if( session('errorMsg') )
+				<p style="color:red">{{ session('errorMsg') }}</p>
+			@endif
+			<form action="" method="post">
+				@csrf
 				<ul>
 					<li>
-					<input type="text" name="username" class="text"/>
+					<input type="text" name="name" class="text" placeholder="请输入用户名">
 						<span><i class="fa fa-user"></i></span>
 					</li>
 					<li>
-						<input type="password" name="password" class="text"/>
+						<input type="password" name="password" class="text" placeholder="请输入密码">
 						<span><i class="fa fa-lock"></i></span>
 					</li>
 					<li>
-						<input type="text" class="code" name="code"/>
+						<input type="text" class="code" name="code" placeholder="请输入验证码">
 						<span><i class="fa fa-check-square-o"></i></span>
 						<img src="{{ captcha_src('flat')  }}"
 							 onclick="this.src='{{captcha_src('flat')}}&'+Math.random()" alt="">
