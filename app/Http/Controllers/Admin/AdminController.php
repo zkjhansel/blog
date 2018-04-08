@@ -31,8 +31,7 @@ class AdminController extends CommonController
             }
 
             session(['admin'=>$admin]);
-
-            echo '登录成功';
+            return redirect('admin/index');
 
         }
 

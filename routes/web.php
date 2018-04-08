@@ -19,5 +19,8 @@ Route::get('/', function () {
 Route::namespace('Admin')->group(function () {
     Route::any('admin/login','AdminController@login');
 
+    Route::get('admin/index','IndexController@index');
+    Route::get('admin/info', 'IndexController@info');
+
     Route::get('admin/check/code/{code?}','AdminController@check');
 });
