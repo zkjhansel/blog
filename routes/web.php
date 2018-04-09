@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 
 //后台命名空间分组
-/*Route::namespace('Admin')->group(['prefix'=>'admin'],function () {
+/*Route::namespace('Admin')->group(function () {
     Route::get('admin/check/code/{code?}','AdminController@check');
 });*/
 
@@ -34,6 +34,7 @@ Route::group(['middleware'=>['admin.login'],'prefix'=>'admin','namespace'=>'Admi
 
     Route::get('index','IndexController@index');
     Route::get('info', 'IndexController@info');
+    Route::any('pass', 'IndexController@pass');
 
 });
 
