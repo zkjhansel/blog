@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 class IndexController extends CommonController
 {
-
     /*
      * 进入后台首页
      */

@@ -34,9 +34,19 @@ class AdminController extends CommonController
             return redirect('admin/index');
 
         }
-
+        if (session('admin')) {
+            return redirect('admin/index');
+        }
         return view('admin.login');
 
+    }
+
+    /*
+     * 退出登录
+     */
+    public function quit() {
+        session(['admin'=>'']);
+        return redirect('admin/login');
     }
 
     public function check(Request $request) {
