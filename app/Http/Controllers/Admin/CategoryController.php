@@ -58,6 +58,10 @@ class CategoryController extends CommonController
      */
     public function create() {
 
+        $cate = Category::where( ['cate_pid'=>0] )->pluck('cate_name','cate_id');
+        return view('admin.add',[
+            'cate'=>$cate
+        ]);
     }
 
     /* 写入存储数据
