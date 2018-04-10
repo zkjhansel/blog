@@ -1,5 +1,5 @@
 <!-- 后台公共布局页面 -->
-@extends('layout.admin');
+@extends('layout.admin')
 @section('content')
     <div class="top_box">
         <div class="top_left">

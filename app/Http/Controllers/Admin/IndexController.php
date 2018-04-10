@@ -51,7 +51,7 @@ class IndexController extends CommonController
             //更新密码
             $admin->password = Crypt::encrypt($input['new_pass']);
             $admin->update();
-            return redirect('admin/info');
+            return back()->with('successTip','密码修改成功');
 
         }
 

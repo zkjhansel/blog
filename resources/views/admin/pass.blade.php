@@ -17,11 +17,15 @@
             {{--@foreach($errors->all() as $error)
                 <p>{{ $error }}</p>
             @endforeach--}}
-                <p>{{ $errors->first() }}</p>
+                <p style="color: red">{{ $errors->first() }}</p>
             </div>
         @elseif(session('errorMsg'))
             <div class="mark">
-                <p>{{ session('errorMsg') }}</p>
+                <p style="color: red">{{ session('errorMsg') }}</p>
+            </div>
+        @elseif(session('successTip'))
+            <div class="mark">
+                <p style="color:green;">{{ session('successTip') }}</p>
             </div>
         @endif
     </div>
