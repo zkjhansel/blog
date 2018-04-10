@@ -13,7 +13,7 @@ class CategoryController extends CommonController
      */
     public function index() {
 
-        $cate = Category::all();
+        $cate = (new Category)->tree();
         return view('admin.list',[
             'data'=>$cate
         ]);
