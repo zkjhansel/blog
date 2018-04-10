@@ -18,6 +18,40 @@ class CategoryController extends CommonController
             'data'=>$cate
         ]);
     }
+    
+    /*
+     * 
+     */
+    public function changeOrder(Request $request)
+    {
+        $result = ['status'=>0, 'msg'=>''];
+        $input = $request->all();
+        if (!is_numeric($input['cate_id']) || !is_numeric($input['cate_order'])) {
+            $result['msg'] = '参数错误';
+            return $result;
+        }
+        if (intval($input['cate_order']) < 0) {
+            $result['msg'] = '排序数字必须大于0';
+            return $result;
+        }
+
+        $category = Category::find($input['cate_id']);
+        if (!$category) {
+            $result['msg'] = '数据不存在';
+            return $result;
+        }
+
+        $category->cate_order = $input['cate_order'];
+        $res = $category->save();
+        if (!$res) {
+            $result['msg'] = '排序更新失败';
+            return $result;
+        }
+        $result['status'] = 1;
+        $result['msg'] = '排序成功';
+        return $result;
+
+    }
 
     /* 显示新增页面
      * GET url:admin/category/create
@@ -57,7 +91,7 @@ class CategoryController extends CommonController
     /* 删除方法
      * DELETE   | admin/category/{category}
      */
-    public function destory() {
+    public function destroy() {
 
     }
 

@@ -1,7 +1,6 @@
 @extends('layout.admin')
 @section('content')
 
-
     <!--面包屑导航 开始-->
     <div class="crumb_warp">
         <!--<i class="fa fa-bell"></i> 欢迎使用登陆网站后台，建站的首选工具。-->
@@ -63,7 +62,7 @@
                     <tr>
 
                         <td class="tc">
-                            <input type="text" name="cate_order[{{$value['cate_id']}}]" value="0">
+                            <input type="text" class="setOrder" data-id="{{ $value['cate_id'] }}" maxlength="5" value="{{ $value['cate_order'] }}">
                         </td>
                         <td class="tc">{{ $value['cate_id'] }}</td>
                         <td>
@@ -84,20 +83,20 @@
                 </table>
 
 
-    <div class="page_nav">
-    <div>
-    <a class="first" href="/wysls/index.php/Admin/Tag/index/p/1.html">第一页</a>
-    <a class="prev" href="/wysls/index.php/Admin/Tag/index/p/7.html">上一页</a>
-    <a class="num" href="/wysls/index.php/Admin/Tag/index/p/6.html">6</a>
-    <a class="num" href="/wysls/index.php/Admin/Tag/index/p/7.html">7</a>
-    <span class="current">8</span>
-    <a class="num" href="/wysls/index.php/Admin/Tag/index/p/9.html">9</a>
-    <a class="num" href="/wysls/index.php/Admin/Tag/index/p/10.html">10</a>
-    <a class="next" href="/wysls/index.php/Admin/Tag/index/p/9.html">下一页</a>
-    <a class="end" href="/wysls/index.php/Admin/Tag/index/p/11.html">最后一页</a>
-    <span class="rows">11 条记录</span>
-    </div>
-    </div>
+                <div class="page_nav">
+                <div>
+                <a class="first" href="/wysls/index.php/Admin/Tag/index/p/1.html">第一页</a>
+                <a class="prev" href="/wysls/index.php/Admin/Tag/index/p/7.html">上一页</a>
+                <a class="num" href="/wysls/index.php/Admin/Tag/index/p/6.html">6</a>
+                <a class="num" href="/wysls/index.php/Admin/Tag/index/p/7.html">7</a>
+                <span class="current">8</span>
+                <a class="num" href="/wysls/index.php/Admin/Tag/index/p/9.html">9</a>
+                <a class="num" href="/wysls/index.php/Admin/Tag/index/p/10.html">10</a>
+                <a class="next" href="/wysls/index.php/Admin/Tag/index/p/9.html">下一页</a>
+                <a class="end" href="/wysls/index.php/Admin/Tag/index/p/11.html">最后一页</a>
+                <span class="rows">11 条记录</span>
+                </div>
+                </div>
 
 
 
@@ -105,4 +104,58 @@
         </div>
     </form>
     <!--搜索结果页面 列表 结束-->
+
+<script>
+    $(function () {
+
+        $('.setOrder').change(function () {
+
+            var cate_id = parseInt($(this).attr('data-id'));
+            var cate_order = parseInt($(this).val());
+
+            if (isNaN(cate_id) || isNaN(cate_order)) {
+                layer.alert('排序请填写数字', {icon: 5});
+                return false;
+            }
+            if ( cate_id < 0 || cate_order < 0 ) {
+                layer.alert('排序数字必须大于0', {icon: 5});
+                return false;
+            }
+
+            var csrf_token = '{{ csrf_token() }}';
+            var url = "{{ url('admin/category/changeOrder')  }}";
+
+            $.ajax({
+                type : 'POST',
+                url : url,
+                data : {
+                    'cate_id' : cate_id,
+                    'cate_order' : cate_order
+                },
+                dataType : 'JSON',
+                headers: {
+                    'X-CSRF-TOKEN': csrf_token
+                },
+                success : function (data) {
+                    if (data.status == 1) {
+                        //修改成功
+                        layer.alert(data.msg, {icon: 6});
+                        return false;
+                    } else {
+                        //修改失败
+                        layer.alert(data.msg, {icon: 5});
+                        return false;
+                    }
+                },
+                error : function () {
+                    layer.alert('排序更新失败', {icon: 5});
+                    return false;
+                }
+
+            })
+
+        })
+
+    });
+</script>
 @endsection('content')
