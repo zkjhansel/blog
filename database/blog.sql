@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50721
 File Encoding         : 65001
 
-Date: 2018-04-10 10:01:06
+Date: 2018-04-11 17:32:25
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -48,11 +48,18 @@ CREATE TABLE `blog_category` (
   `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '//添加时间',
   `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '//更新时间',
   PRIMARY KEY (`cate_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='//文章分类表';
+) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COMMENT='//文章分类表';
 
 -- ----------------------------
 -- Records of blog_category
 -- ----------------------------
-INSERT INTO `blog_category` VALUES ('1', '财经', '全国财经信息', '0', '', '', '0', '0', '1523324251', '1523324351');
+INSERT INTO `blog_category` VALUES ('1', '财经', '全国财经信息', '0', '', '', '0', '10', '1523324251', '1523324351');
 INSERT INTO `blog_category` VALUES ('2', '新闻', '新闻资讯，来这里转转', '0', '', '', '0', '0', '1523324444', '1523324555');
 INSERT INTO `blog_category` VALUES ('3', '娱乐', '娱乐八卦，尽在你手', '0', '', '', '0', '0', '1523324666', '1523324777');
+INSERT INTO `blog_category` VALUES ('4', '国内新闻', '国内重要新鲜资讯，下载APP随时推送', '2', '', '', '0', '0', '1523324251', '1523324251');
+INSERT INTO `blog_category` VALUES ('5', '体育新闻', '国足男篮，统统有料', '2', '', '', '0', '0', '1523324251', '1523324251');
+INSERT INTO `blog_category` VALUES ('6', '科技新闻', '科技新闻，有创意的大脑在这里', '2', '', '', '0', '0', '1523324251', '1523324251');
+INSERT INTO `blog_category` VALUES ('7', '生活消费', '生活还是要继续', '1', '', '', '0', '15', '1523324251', '1523324251');
+INSERT INTO `blog_category` VALUES ('8', '资产理财', '你不理财财不理你', '1', '', '', '0', '0', '1523324251', '1523324251');
+INSERT INTO `blog_category` VALUES ('9', '直播', '大家现在都在搞直播', '0', '直播', '直播行业乱象丛生', '0', '99', '0', '0');
+INSERT INTO `blog_category` VALUES ('21', '测试', '测试', '0', '45', '1', '0', '0', '1523438824', '1523438824');
