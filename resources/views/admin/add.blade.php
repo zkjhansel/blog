@@ -8,30 +8,18 @@
     </div>
     <!--面包屑导航 结束-->
 
-	<!--结果集标题与导航组件 开始-->
-	<div class="result_wrap">
-        <div class="result_title">
-            <h3>快捷操作</h3>
-        </div>
-        <div class="result_content">
-            <div class="short_wrap">
-                <a href="#"><i class="fa fa-plus"></i>新增文章</a>
-                <a href="#"><i class="fa fa-recycle"></i>批量删除</a>
-                <a href="#"><i class="fa fa-refresh"></i>更新排序</a>
-            </div>
-        </div>
-    </div>
-    <!--结果集标题与导航组件 结束-->
+    @include('layout.tip')
     
     <div class="result_wrap">
-        <form action="#" method="post">
+        <form action="{{ url('admin/category') }}" method="post" onsubmit ="getElementById('sub').disabled=true;return true;">
+            @csrf
             <table class="add_tab">
                 <tbody>
                     <tr>
                         <th width="120"><i class="require">*</i>主分类：</th>
                         <td>
                             <select name="cate_pid" style="height: 30px;">
-                                <option value="">==请选择==</option>
+                                <option value="0">==请选择==</option>
                                 @if(count($cate)>0)
                                     @foreach($cate as $kid=>$name)
                                         <option value="{{$kid}}">== {{ $name }} ==</option>
@@ -43,37 +31,35 @@
                     <tr>
                         <th><i class="require">*</i>分类名称：</th>
                         <td>
-                            <input type="text" class="lg" style="padding:8px 5px;" name="cate_name">
-                            <p>分类名称必须填写</p>
+                            <input type="text" class="lg" style="padding:8px 5px;" value="{{ old('cate_name') ?? ''}}" placeholder="请填写分类名称" name="cate_name">
                         </td>
                     </tr>
 
                     <tr>
                         <th><i class="require">*</i>分类标题：</th>
                         <td>
-                            <input type="text" class="lg" style="padding:8px 5px;" name="cate_title">
-                            <p>分类标题必须填写</p>
+                            <input type="text" class="lg" style="padding:8px 5px;" placeholder="请填写分类标题" value="{{ old('cate_title') ?? '' }}" name="cate_title">
                         </td>
                     </tr>
 
                     <tr>
-                        <th>关键词：</th>
+                        <th><i class="require">*</i>关键词：</th>
                         <td>
-                            <textarea class="lg" name="cate_keywords"></textarea>
-                            <p>标题可以写30个字</p>
+                            <textarea class="lg" name="cate_keywords" placeholder="请填写分类关键词">{{ old('cate_keywords') ?? ''}}</textarea>
+                            <p></p>
                         </td>
                     </tr>
 
                     <tr>
-                        <th>描述：</th>
+                        <th><i class="require">*</i>描述：</th>
                         <td>
-                            <textarea name="cate_desc"></textarea>
+                            <textarea name="cate_desc" placeholder="请填写分类描述">{{ old('cate_desc') ?? '' }}</textarea>
                         </td>
                     </tr>
                     <tr>
                         <th>分类排序：</th>
                         <td>
-                            <input type="text" class="sm" name="cate_order" value="0">
+                            <input type="text" class="sm" name="cate_order" value="{{ old('cate_order') ?? 0 }}">
                         </td>
                     </tr>
 
@@ -81,7 +67,7 @@
                     <tr>
                         <th></th>
                         <td>
-                            <input type="submit" value="提交">
+                            <input type="submit" value="提交" id="sub">
                             <input type="button" class="back" onclick="history.go(-1)" value="返回">
                         </td>
                     </tr>

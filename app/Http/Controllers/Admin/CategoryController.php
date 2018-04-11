@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Model\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends CommonController
 {
@@ -20,7 +21,7 @@ class CategoryController extends CommonController
     }
     
     /*
-     * 
+     * 排序功能
      */
     public function changeOrder(Request $request)
     {
@@ -67,7 +68,38 @@ class CategoryController extends CommonController
     /* 写入存储数据
      * POST url:admin/category
      */
-    public function store() {
+    public function store(Request $request) {
+
+        $input = $request->except(['_token']);
+        $rules = [
+            'cate_name'=>'required',
+            'cate_title'=>'required',
+            'cate_keywords'=>'required',
+            'cate_desc'=>'required'
+        ];
+        $message = [
+            'cate_name.required'=>'请输入分类名称',
+            'cate_title.required'=>'请输入分类标题',
+            'cate_keywords.required'=>'请输入关键词',
+            'cate_desc.required'=>'请输入分类描述'
+        ];
+        $validate = Validator::make($input, $rules, $message);
+        if ($validate->fails()) {
+            return back()->withErrors($validate)->withInput();
+        }
+        //withInput数据保持 模板使用old接收
+        $isHave = Category::where( ['cate_name'=>$input['cate_name']] )->first();
+        if ($isHave) {
+            return back()->with('errorMsg','该分类名称已存在')->withInput();
+        }
+        //写入数据
+        $input['create_time'] = $input['update_time'] = time();
+        $res = Category::create($input);
+        if (!$res) {
+            return back()->with('errorMsg','文章内容写入失败');
+        }
+        return redirect('admin/category')->with('successTip','文章新增成功');
+
 
     }
 
