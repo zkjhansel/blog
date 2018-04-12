@@ -1,4 +1,3 @@
-
 <div class="result_wrap">
     <div class="result_title">
         @if(count($errors)>0)

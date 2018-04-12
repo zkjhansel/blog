@@ -15,7 +15,7 @@ class CategoryController extends CommonController
     public function index() {
 
         $cate = (new Category)->tree();
-        return view('admin.list',[
+        return view('admin.category.list',[
             'data'=>$cate
         ]);
     }
@@ -60,17 +60,17 @@ class CategoryController extends CommonController
     public function create() {
 
         $cate = Category::where( ['cate_pid'=>0] )->pluck('cate_name','cate_id');
-        return view('admin.add',[
+        return view('admin.category.add',[
             'cate'=>$cate
         ]);
     }
 
-    /* 写入存储数据
-     * POST url:admin/category
+    /*
+     * check方法
      */
-    public function store(Request $request) {
+    protected function check($input) {
 
-        $input = $request->except(['_token']);
+        $result = ['status' => 0];
         $rules = [
             'cate_name'=>'required',
             'cate_title'=>'required',
@@ -85,7 +85,23 @@ class CategoryController extends CommonController
         ];
         $validate = Validator::make($input, $rules, $message);
         if ($validate->fails()) {
-            return back()->withErrors($validate)->withInput();
+            $result['obj'] = $validate;
+            return $result;
+        }
+        $result['status'] = 1;
+        return $result;
+    }
+
+    /* 写入存储数据
+     * POST url:admin/category
+     */
+    public function store(Request $request) {
+
+        $input = $request->except(['_token']);
+        //check验证
+        $rs = $this->check($input);
+        if (!$rs['status']) {
+            return back()->withErrors($rs['obj'])->withInput();
         }
         //withInput数据保持 模板使用old接收
         $isHave = Category::where( ['cate_name'=>$input['cate_name']] )->first();
@@ -113,21 +129,58 @@ class CategoryController extends CommonController
     /* 编辑页面
      * GET admin/category/{category}/edit
      */
-    public function edit() {
+    public function edit($id) {
 
+        if (!is_numeric($id) || intval($id)<=0) {
+            return back()->with('errorMsg','参数错误');
+        }
+        $info = Category::find($id);
+        if (!$info) return back()->with('errorMsg','数据不存在');
+
+        $cate = Category::where( ['cate_pid'=>0] )->pluck('cate_name','cate_id');
+        return view('admin.category.edit',[
+            'cate' => $cate,
+            'info' => $info
+        ]);
     }
 
     /* 更新操作
      * PUT admin/category/{category}
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
      */
-    public function update() {
+    public function update(Request $request, $id)
+    {
+        $input = $request->except(['_token','_method']);
+        //check验证
+        $rs = $this->check($input);
+        if (!$rs['status']) {
+            return back()->withErrors($rs['obj'])->withInput();
+        }
+        $info = Category::find($id);
+        if (!$info) return back()->with('errorMsg','数据不存在');
+        //withInput数据保持 模板使用old接收
+        $isHave = Category::where([
+                    ['cate_name', '=', $input['cate_name']],
+                    ['cate_id', '<>', $id],
+                ])->first();
+        if ($isHave) {
+            return back()->with('errorMsg','该分类名称已被占用')->withInput();
+        }
+
+        $res = Category::where('cate_id','=',$id)->update($input);
+        if (!$res) {
+            return back()->with('errorMsg','文章信息更新失败')->withInput();
+        }
+        return redirect('admin/category')->with('successTip','文章信息修改成功');
 
     }
 
     /* 删除方法
      * DELETE   | admin/category/{category}
      */
-    public function destroy() {
+    public function destroy($id) {
 
     }
 

@@ -70,7 +70,7 @@
                         <td>{{ $value['cate_scan'] }}</td>
                         <td>{{ date('Y-m-d H:i:s',$value['update_time']) }}</td>
                         <td>
-                            <a href="#">修改</a>
+                            <a href="{{ url('admin/category/'.$value['cate_id'].'/edit') }}">修改</a>
                             <a href="#">删除</a>
                         </td>
                     </tr>
