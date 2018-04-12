@@ -119,13 +119,6 @@ class CategoryController extends CommonController
 
     }
 
-    /* 显示一条信息
-     * GET url:admin/category/{category}
-     */
-    public function show() {
-
-    }
-
     /* 编辑页面
      * GET admin/category/{category}/edit
      */
@@ -182,6 +175,32 @@ class CategoryController extends CommonController
      */
     public function destroy($id) {
 
+        $result = ['status' => 0, 'msg'=>''];
+        if (!is_numeric($id) || intval($id)<=0) {
+            $result['msg'] = '参数错误';
+            return $result;
+        }
+        $info = Category::find($id);
+        if (!$info) {
+            $result['msg'] = '信息不存在';
+            return $result;
+        }
+        //此分类下是否有下级分类。如果有则不能删除
+        $has = Category::where('cate_pid','=',$info['cate_id'])->first();
+        if ($has) {
+            $result['msg'] = '该分类下还有子分类，请先删除子分类';
+            return $result;
+        }
+
+        $res = Category::where('cate_id','=',$id)->delete();
+        if (!$res) {
+            $result['msg'] = '信息不存在';
+            return $result;
+        }
+
+        $result['status'] = 1;
+        $result['msg'] = '分类删除成功';
+        return $result;
     }
 
 }

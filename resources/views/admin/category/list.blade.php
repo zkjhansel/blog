@@ -4,7 +4,7 @@
     <!--面包屑导航 开始-->
     <div class="crumb_warp">
         <!--<i class="fa fa-bell"></i> 欢迎使用登陆网站后台，建站的首选工具。-->
-        <i class="fa fa-home"></i> <a href="#">首页</a> &raquo; <a href="#">商品管理</a> &raquo; 添加商品
+        <i class="fa fa-home"></i> <a href="{{ url('admin/info') }}">首页</a> &raquo; <a href="#">分类管理</a> &raquo; 分类列表
     </div>
 
 	<!--结果页快捷搜索框 开始-->
@@ -36,7 +36,7 @@
             <!--快捷导航 开始-->
             <div class="result_content">
                 <div class="short_wrap">
-                    <a href="{{ url('admin/category/create') }}"><i class="fa fa-plus"></i>新增文章</a>
+                    <a href="{{ url('admin/category/create') }}"><i class="fa fa-plus"></i>新增分类</a>
                 </div>
             </div>
             <!--快捷导航 结束-->
@@ -71,32 +71,12 @@
                         <td>{{ date('Y-m-d H:i:s',$value['update_time']) }}</td>
                         <td>
                             <a href="{{ url('admin/category/'.$value['cate_id'].'/edit') }}">修改</a>
-                            <a href="#">删除</a>
+                            <a href="javascript:;" data-id="{{ $value['cate_id'] }}" class="del">删除</a>
                         </td>
                     </tr>
                     @endforeach
 
-
-
                 </table>
-
-
-                <div class="page_nav">
-                <div>
-                <a class="first" href="/wysls/index.php/Admin/Tag/index/p/1.html">第一页</a>
-                <a class="prev" href="/wysls/index.php/Admin/Tag/index/p/7.html">上一页</a>
-                <a class="num" href="/wysls/index.php/Admin/Tag/index/p/6.html">6</a>
-                <a class="num" href="/wysls/index.php/Admin/Tag/index/p/7.html">7</a>
-                <span class="current">8</span>
-                <a class="num" href="/wysls/index.php/Admin/Tag/index/p/9.html">9</a>
-                <a class="num" href="/wysls/index.php/Admin/Tag/index/p/10.html">10</a>
-                <a class="next" href="/wysls/index.php/Admin/Tag/index/p/9.html">下一页</a>
-                <a class="end" href="/wysls/index.php/Admin/Tag/index/p/11.html">最后一页</a>
-                <span class="rows">11 条记录</span>
-                </div>
-                </div>
-
-
 
             </div>
         </div>
@@ -154,6 +134,51 @@
 
         })
 
+        $('.del').click(function () {
+
+            var cate_id = $(this).attr('data-id');
+            var csrf_token = '{{ csrf_token() }}';
+            var url = "{{ url('admin/category/')  }}"+'/'+cate_id;
+
+            layer.confirm('确定删除改分类么？', {
+                btn: ['确定','取消']
+            }, function(){
+                $.ajax({
+                    type : 'POST',
+                    url : url,
+                    data : {
+                        '_method' : 'DELETE',
+                    },
+                    dataType : 'JSON',
+                    headers: {
+                        'X-CSRF-TOKEN': csrf_token
+                    },
+                    success : function (data) {
+                        if (data.status == 1) {
+                            //修改成功
+                            layer.alert(data.msg, {icon: 6});
+                            setTimeout(function () {
+                                window.location.reload();
+                            },1500);
+                        } else {
+                            //修改失败
+                            layer.alert(data.msg, {icon: 5});
+                            return false;
+                        }
+                    },
+                    error : function () {
+                        layer.alert('排序更新失败', {icon: 5});
+                        return false;
+                    }
+
+                })
+                //layer.msg('的确很重要', {icon: 1});
+            }, function(){
+
+            });
+
+
+        });
     });
 
     //文章新增成功的弹窗
