@@ -39,6 +39,7 @@ Route::group(['middleware'=>['admin.login'],'prefix'=>'admin','namespace'=>'Admi
     //资源路由 一条路由控制多条路由
     //php artisan make:controller CateGoryController --resource 帮助我们生成好资源路由控制器
     Route::resource('category','CateGoryController');
+    Route::resource('article','ArticleController');
 
     Route::post('category/changeOrder', 'CateGoryController@changeOrder');
 });

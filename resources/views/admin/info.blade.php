@@ -9,7 +9,7 @@
         <div class="result_content">
             <div class="short_wrap">
                 <a href="{{ url('admin/category/create') }}"><i class="fa fa-plus"></i>新增分类</a>
-                <a href="{{ url('admin/category') }}"><i class="fa fa-list"></i>分类列表</a>
+                <a href="{{ url('admin/article/create') }}"><i class="fa fa-list"></i>新增文章</a>
             </div>
         </div>
     </div>
