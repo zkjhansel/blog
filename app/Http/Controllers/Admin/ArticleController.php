@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Model\Article;
 use App\Http\Model\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -13,44 +14,11 @@ class ArticleController extends CommonController
      * return view
      */
     public function index() {
-        $cate = (new Category)->tree();
+
+        $list = Article::orderBy('art_id','DESC')->paginate('2');
         return view('admin.article.list',[
-            'data'=>$cate
+            'data' => $list
         ]);
-    }
-    
-    /*
-     * 排序功能
-     */
-    public function changeOrder(Request $request)
-    {
-        $result = ['status'=>0, 'msg'=>''];
-        $input = $request->all();
-        if (!is_numeric($input['cate_id']) || !is_numeric($input['cate_order'])) {
-            $result['msg'] = '参数错误';
-            return $result;
-        }
-        if (intval($input['cate_order']) < 0) {
-            $result['msg'] = '排序数字必须大于0';
-            return $result;
-        }
-
-        $category = Category::find($input['cate_id']);
-        if (!$category) {
-            $result['msg'] = '数据不存在';
-            return $result;
-        }
-
-        $category->cate_order = $input['cate_order'];
-        $res = $category->save();
-        if (!$res) {
-            $result['msg'] = '排序更新失败';
-            return $result;
-        }
-        $result['status'] = 1;
-        $result['msg'] = '排序成功';
-        return $result;
-
     }
 
 
@@ -72,16 +40,14 @@ class ArticleController extends CommonController
 
         $result = ['status' => 0];
         $rules = [
-            'cate_name'=>'required',
-            'cate_title'=>'required',
-            'cate_keywords'=>'required',
-            'cate_desc'=>'required'
+            'art_title'=>'required',
+            'art_thumb'=>'required',
+            'art_content'=>'required',
         ];
         $message = [
-            'cate_name.required'=>'请输入分类名称',
-            'cate_title.required'=>'请输入分类标题',
-            'cate_keywords.required'=>'请输入关键词',
-            'cate_desc.required'=>'请输入分类描述'
+            'art_title.required'=>'请输入文章标题',
+            'art_thumb.required'=>'请上传文章缩略图',
+            'art_content.required'=>'请填写文章内容',
         ];
         $validate = Validator::make($input, $rules, $message);
         if ($validate->fails()) {
@@ -93,7 +59,7 @@ class ArticleController extends CommonController
     }
 
     /* 写入存储数据
-     * POST url:admin/category
+     * POST url:admin/article
      */
     public function store(Request $request) {
 
@@ -104,17 +70,18 @@ class ArticleController extends CommonController
             return back()->withErrors($rs['obj'])->withInput();
         }
         //withInput数据保持 模板使用old接收
-        $isHave = Category::where( ['cate_name'=>$input['cate_name']] )->first();
+        $isHave = Article::where( ['art_title'=>$input['art_title']] )->first();
         if ($isHave) {
-            return back()->with('errorMsg','该分类名称已存在')->withInput();
+            return back()->with('errorMsg','该文章标题已存在')->withInput();
         }
         //写入数据
-        $input['create_time'] = $input['update_time'] = time();
-        $res = Category::create($input);
+        if (!$input['art_author']) $input['art_author'] = 'Admin';
+        $input['art_time'] =  time();
+        $res = Article::create($input);
         if (!$res) {
             return back()->with('errorMsg','文章内容写入失败');
         }
-        return redirect('admin/category')->with('successTip','文章新增成功');
+        return redirect('admin/article/create')->with('successTip','文章新增成功');
 
 
     }

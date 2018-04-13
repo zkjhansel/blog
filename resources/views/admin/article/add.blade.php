@@ -51,7 +51,7 @@
                     <tr>
                         <th>缩略图：</th>
                         <td>
-                            <input type="text" class="lg" id="art_thumb" style="padding:8px 5px;" name="art_thumb">
+                            <input type="text" class="lg" readonly id="art_thumb" style="padding:8px 5px;" name="art_thumb">
                             <input id="file_upload" name="file_upload" type="file" multiple="true">
                             <img src="" alt="预览图" id="thumb_img" style="display: none;max-width: 300px;">
                         </td>
@@ -61,7 +61,7 @@
                     <tr>
                         <th>SEO关键词：</th>
                         <td>
-                            <textarea class="lg" name="art_keywords" placeholder="请填写文章SEO关键词">{{ old('art_keywords') ?? ''}}</textarea>
+                            <textarea class="lg" name="art_tags" placeholder="请填写文章SEO关键词">{{ old('art_tags') ?? ''}}</textarea>
                             <p></p>
                         </td>
                     </tr>
@@ -69,7 +69,7 @@
                     <tr>
                         <th>文章SEO描述：</th>
                         <td>
-                            <textarea name="atr_desc" placeholder="请填写文章SEO描述">{{ old('atr_desc') ?? '' }}</textarea>
+                            <textarea name="art_desc" placeholder="请填写文章SEO描述">{{ old('art_desc') ?? '' }}</textarea>
                         </td>
                     </tr>
 
@@ -85,7 +85,7 @@
                     <tr>
                         <th><i class="require">*</i>文章内容：</th>
                         <td>
-                            <script id="editor" name="atr_content" style="width: 1024px;height: 400px;" type="text/plain"></script>
+                            <script id="editor" name="art_content" style="width: 1024px;height: 400px;" type="text/plain"></script>
                             <script type="text/javascript">
                                 //实例化编辑器
                                 UE.getEditor('editor');

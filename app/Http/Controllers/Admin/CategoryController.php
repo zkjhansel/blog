@@ -112,9 +112,9 @@ class CategoryController extends CommonController
         $input['create_time'] = $input['update_time'] = time();
         $res = Category::create($input);
         if (!$res) {
-            return back()->with('errorMsg','文章内容写入失败');
+            return back()->with('errorMsg','分类写入失败');
         }
-        return redirect('admin/category')->with('successTip','文章新增成功');
+        return redirect('admin/category')->with('successTip','分类新增成功');
 
 
     }
