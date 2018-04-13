@@ -13,7 +13,6 @@ class ArticleController extends CommonController
      * return view
      */
     public function index() {
-
         $cate = (new Category)->tree();
         return view('admin.article.list',[
             'data'=>$cate

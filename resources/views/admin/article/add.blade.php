@@ -41,10 +41,19 @@
                         </td>
                     </tr>
 
+                    <script src="{{ asset('plugins/uploadify/jquery.uploadify.min.js') }}" type="text/javascript"></script>
+                    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/uploadify/uploadify.css') }}">
+                    <style>
+                        .uploadify{display:inline-block;}
+                        .uploadify-button{border:none; border-radius:5px; margin-top:8px;}
+                        table.add_tab tr td span.uploadify-button-text{color: #FFF; margin:0;}
+                    </style>
                     <tr>
                         <th>缩略图：</th>
                         <td>
-                            <input type="text" class="lg" style="padding:8px 5px;" value="{{ old('art_thumb') ?? ''}}" placeholder="上传文章缩略图" name="art_thumb">
+                            <input type="text" class="lg" id="art_thumb" style="padding:8px 5px;" name="art_thumb">
+                            <input id="file_upload" name="file_upload" type="file" multiple="true">
+                            <img src="" alt="预览图" id="thumb_img" style="display: none;max-width: 300px;">
                         </td>
                     </tr>
 
@@ -96,5 +105,21 @@
             </table>
         </form>
     </div>
+
+
+    <script type="text/javascript">
+        $(function() {
+            $('#file_upload').uploadify({
+                'buttonText' : '图片上传',
+                'swf'      : '{{ asset('plugins/uploadify/uploadify.swf') }}',
+                'uploader' : '{{ url('admin/upload') }}',
+                'onUploadSuccess' : function (file,data,response) {
+
+                    $('#art_thumb').val(data);
+                    $('#thumb_img').attr('src',data).show();
+                }
+            });
+        });
+    </script>
 
 @endsection
