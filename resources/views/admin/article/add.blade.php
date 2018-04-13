@@ -16,50 +16,71 @@
             <table class="add_tab">
                 <tbody>
                     <tr>
-                        <th width="120"><i class="require">*</i>主分类：</th>
+                        <th width="120">主分类：</th>
                         <td>
-                            <select name="cate_pid" style="height: 30px;">
-                                <option value="0">==请选择==</option>
+                            <select name="category_id" style="height: 30px;">
                                 @if(count($cate)>0)
-                                    @foreach($cate as $kid=>$name)
-                                        <option value="{{$kid}}">== {{ $name }} ==</option>
+                                    @foreach($cate as $value)
+                                        <option value="{{$value['cate_id']}}"> {{ $value['cate_name']}} </option>
                                     @endforeach
                                 @endif
                             </select>
                         </td>
                     </tr>
                     <tr>
-                        <th><i class="require">*</i>分类名称：</th>
+                        <th><i class="require">*</i>文章标题：</th>
                         <td>
-                            <input type="text" class="lg" style="padding:8px 5px;" value="{{ old('cate_name') ?? ''}}" placeholder="请填写分类名称" name="cate_name">
+                            <input type="text" class="lg" style="padding:8px 5px;" value="{{ old('art_title') ?? ''}}" placeholder="请填写文章标题" name="art_title">
                         </td>
                     </tr>
 
                     <tr>
-                        <th><i class="require">*</i>分类标题：</th>
+                        <th>文章作者：</th>
                         <td>
-                            <input type="text" class="lg" style="padding:8px 5px;" placeholder="请填写分类标题" value="{{ old('cate_title') ?? '' }}" name="cate_title">
+                            <input type="text" class="lg" style="width: 150px;padding:8px 5px;" value="{{ old('art_author') ?? ''}}" placeholder="请填写文章作者" name="art_author">
                         </td>
                     </tr>
 
                     <tr>
-                        <th><i class="require">*</i>关键词：</th>
+                        <th>缩略图：</th>
                         <td>
-                            <textarea class="lg" name="cate_keywords" placeholder="请填写分类关键词">{{ old('cate_keywords') ?? ''}}</textarea>
+                            <input type="text" class="lg" style="padding:8px 5px;" value="{{ old('art_thumb') ?? ''}}" placeholder="上传文章缩略图" name="art_thumb">
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <th>SEO关键词：</th>
+                        <td>
+                            <textarea class="lg" name="art_keywords" placeholder="请填写文章SEO关键词">{{ old('art_keywords') ?? ''}}</textarea>
                             <p></p>
                         </td>
                     </tr>
 
                     <tr>
-                        <th><i class="require">*</i>描述：</th>
+                        <th>文章SEO描述：</th>
                         <td>
-                            <textarea name="cate_desc" placeholder="请填写分类描述">{{ old('cate_desc') ?? '' }}</textarea>
+                            <textarea name="atr_desc" placeholder="请填写文章SEO描述">{{ old('atr_desc') ?? '' }}</textarea>
                         </td>
                     </tr>
+
+                    <script type="text/javascript" charset="utf-8" src="{{ asset('plugins/ueditor/ueditor.config.js') }}"></script>
+                    <script type="text/javascript" charset="utf-8" src="{{ asset('plugins/ueditor/ueditor.all.min.js') }}"> </script>
+                    <script type="text/javascript" charset="utf-8" src="{{ asset('plugins/ueditor/lang/zh-cn/zh-cn.js') }}"></script>
+                    <style>
+                        .edui-default{line-height: 28px;}
+                        div.edui-combox-body,div.edui-button-body,div.edui-splitbutton-body
+                        {overflow: hidden; height:20px;}
+                        div.edui-box{overflow: hidden; height:22px;}
+                    </style>
                     <tr>
-                        <th>分类排序：</th>
+                        <th><i class="require">*</i>文章内容：</th>
                         <td>
-                            <input type="text" class="sm" name="cate_order" value="{{ old('cate_order') ?? 0 }}">
+                            <script id="editor" name="atr_content" style="width: 1024px;height: 400px;" type="text/plain"></script>
+                            <script type="text/javascript">
+                                //实例化编辑器
+                                UE.getEditor('editor');
+                            </script>
                         </td>
                     </tr>
 

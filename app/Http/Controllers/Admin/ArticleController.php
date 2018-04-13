@@ -60,7 +60,7 @@ class ArticleController extends CommonController
      */
     public function create() {
 
-        $cate = Category::where( ['cate_pid'=>0] )->pluck('cate_name','cate_id');
+        $cate = (new Category)->tree();
         return view('admin.article.add',[
             'cate'=>$cate
         ]);
